@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import DishesFormWithRedux from './DishesFormWithRedux'
+import DishesForm from './DishesForm'
 
 const DishesPage = () => {
     const [APIresponse, setAPIresponse] = useState({
@@ -93,7 +93,7 @@ const DishesPage = () => {
     <div className='flex-col'>
         <div className='form_container'>
             <h1>Upload a new dish</h1>
-            <DishesFormWithRedux onSubmit={postData}/>
+            <DishesForm onSubmit={postData}/>
             
             { APIresponse.display &&
             <div className='APIresponses'>

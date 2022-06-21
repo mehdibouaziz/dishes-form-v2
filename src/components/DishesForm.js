@@ -1,242 +1,209 @@
 import React from "react";
-import { useState } from "react";
+import { connect } from "react-redux";
+import { Field, reduxForm, formValueSelector } from "redux-form";
 import "../styles/DishesForm.css";
 
-const DishesForm = () => {
-  const defaultDishData = {
-    //default data object to initiate and reset the form
-    name: "",
-    preparation_time: "00:00:00",
-    type: "",
-    no_of_slices: 0,
-    diameter: 0,
-    spiciness_scale: 1,
-    slices_of_bread: 1,
-  };
+const validate = (values) => {
+  const errors = {};
+  if (!values.name) {
+    errors.name = "Required";
+  }
 
-  const [dishData, setDishData] = useState({ ...defaultDishData });
+  if (!values.preparation_time) {
+    errors.preparation_time = "Required";
+  } else if (
+    !/[0-9][0-9]:[0-5][0-9]:[0-5][0-9]/.test(values.preparation_time)
+  ) {
+    errors.preparation_time = "Invalid duration format (hh:mm:ss)";
+  }
 
-  const handleChange = (event) => {
-    let value = event.target.value;
-    if (
-      [
-        "no_of_slices",
-        "diameter",
-        "spiciness_scale",
-        "slices_of_bread",
-      ].includes(event.target.name)
-    ) {
-      value = +value;
-    } //convert strings to numbers
+  if (!values.type) {
+    errors.type = "Required";
+  }
 
-    setDishData({
-      ...dishData,
-      [event.target.name]: value,
-    });
-    return;
-  };
+  if ((values.type === "pizza") & !values.no_of_slices) {
+    errors.no_of_slices = "Required";
+  }
+  if ((values.type === "pizza") & !values.diameter) {
+    errors.diameter = "Required";
+  }
+  if ((values.type === "soup") & !values.spiciness_scale) {
+    errors.spiciness_scale = "Required";
+  }
+  if ((values.type === "sandwich") & !values.slices_of_bread) {
+    errors.slices_of_bread = "Required";
+  }
+  return errors;
+};
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    //prevent automatic refresh, reset and rerooting of the page
-
-    let data = { ...dishData };
-
-    // trim the irrelevant properties for the chosen dish:
-    switch (data.type) {
-      case "pizza":
-        delete data.spiciness_scale;
-        delete data.slices_of_bread;
-        break;
-      case "soup":
-        delete data.no_of_slices;
-        delete data.diameter;
-        delete data.slices_of_bread;
-        break;
-      case "sandwich":
-        delete data.no_of_slices;
-        delete data.diameter;
-        delete data.spiciness_scale;
-        break;
-      default:
-        break;
+const warn = (values) => {
+    const warnings = {}
+    if((values.type === "sandwich") & values.slices_of_bread === '1'){
+        warnings.slices_of_bread = 'Is a 1 slice sandwich still a sandwich?'
     }
+    return warnings
+}
 
-    // send POST
-    postData(data);
+const renderField = ({
+  input,
+  id,
+  label,
+  type,
+  min,
+  max,
+  step,
+  placeholder,
+  meta: { touched, error, warning, active, valid },
+  children
+}) => (
+  <div className="input_div">
+    <label>{label}</label>
+    <div>
+      <input
+        {...input}
+        id={id}
+        placeholder={placeholder}
+        type={type}
+        min={min}
+        max={max}
+        step={step}
+        isactive={active ? 'true' : 'false'}
+        isvalid={valid ? 'true' : 'false'}
+        error={touched && (error ? 'true' : 'false')}
+        warning={touched && (warning ? 'true' : 'false')}
+      />
+      {children}
+      {touched &&
+        ((error && <span>{error}</span>) ||
+          (warning && <span>{warning}</span>))}
+    </div>
+    
+  </div>
+);
+const selectField = ({
+  input,
+  id,
+  label,
+  meta: { touched, error },
+  children,
+}) => (
+  <div className="input_div">
+    <label>{label}</label>
+    <div>
+      <select {...input} id={id}>
+        {children}
+      </select>
+      {touched && error && <span>{error}</span>}
+    </div>
+  </div>
+);
 
-    //clear form, back to default
-    setDishData({ ...defaultDishData });
-  };
-
-  const postData = async (data) => {
-    const response = await fetch(
-      "https://frosty-wood-6558.getsandbox.com:443/dishes",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
-
-    if (response.status >= 200 && response.status <= 299) {
-      //separate true 200 success from 4xx/5xx errors
-      const jsonResponse = await response.json();
-      console.log("Success:", jsonResponse);
-    } else if (response.status >= 400 && response.status <= 599) {
-      //correctly logging 4xx and 5xx as errors with reason
-      const jsonResponse = await response.json();
-      console.error("Error:", jsonResponse);
-    } else {
-      //general error handler
-      console.log(response.status, response.statusText);
-    }
-  };
+let DishesForm = (props) => {
+  const { handleSubmit, pristine, reset, submitting, typeValue, spiciness_scaleValue } = props;
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div className="input_div">
-          <label>
-            Dish name:
-            <br />
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Name of your dish"
-              required
-              value={dishData.name}
-              onChange={handleChange}
-            ></input>
-          </label>
+    <form onSubmit={handleSubmit}>
+      <Field
+        name="name"
+        id="name"
+        component={renderField}
+        type="text"
+        label="Dish name"
+        placeholder="Dish name"
+      ></Field>
+      <Field
+        name="preparation_time"
+        id="preparation_time"
+        component={renderField}
+        type="text"
+        label="Preparation time"
+        placeholder="00:00:00"
+      ></Field>
+      <Field
+        name="type"
+        id="type"
+        component={selectField}
+        label="Choose a dish"
+      >
+        <option />
+        <option value="pizza">Pizza</option>
+        <option value="soup">Soup</option>
+        <option value="sandwich">Sandwich</option>
+      </Field>
+
+      {typeValue === "pizza" && (
+        <div className="w100">
+          <Field
+            name="no_of_slices"
+            id="no_of_slices"
+            component={renderField}
+            type="number"
+            min="0"
+            step="1"
+            label="Number of slices ?"
+          ></Field>
+          <Field
+            name="diameter"
+            id="diameter"
+            component={renderField}
+            type="number"
+            min="0"
+            step="0.1"
+            label="Diameter of the pizza ?"
+          ></Field>
         </div>
+      )}
 
-        <div className="input_div">
-          <label>
-            Prep time:
-            <br />
-            <input
-              type="text"
-              id="preparation_time"
-              name="preparation_time"
-              pattern="[0-9][0-9]:[0-5][0-9]:[0-5][0-9]"
-              placeholder="00:00:00"
-              required
-              value={dishData.preparation_time}
-              onChange={handleChange}
-            ></input>
-          </label>
+      {typeValue === "soup" && (
+        <>
+        <Field
+          name="spiciness_scale"
+          id="spiciness_scale"
+          component={renderField}
+          type="range"
+          min="1"
+          max="10"
+          step="1"
+          label="Spiciness (1-10):"
+        ><p>{spiciness_scaleValue ? spiciness_scaleValue : '?'}</p></Field>
+        </>
+      )}
+
+      {typeValue === "sandwich" && (
+        <Field
+          name="slices_of_bread"
+          id="slices_of_bread"
+          component={renderField}
+          type="number"
+          min="1"
+          step="1"
+          label="How many slices of bread?"
+        ></Field>
+      )}
+
+        <div className="controls">
+            <button type="submit"  disabled={pristine || submitting}>Submit</button>
+            <button type="button"  onClick={reset} disabled={pristine || submitting}><i className="fa-solid fa-trash-can"></i></button>
         </div>
-
-        <div className="input_div">
-          <label>
-            Dish type:
-            <br />
-            <select
-              name="type"
-              id="type"
-              value={dishData.type}
-              onChange={handleChange}
-              required
-            >
-              <option value="" disabled></option>
-              <option value="pizza">Pizza</option>
-              <option value="soup">Soup</option>
-              <option value="sandwich">Sandwich</option>
-            </select>
-          </label>
-        </div>
-
-
-        {/* The following fields are rendered only if relevant to the chosen dish
-            Since irrelevant fields are not rendered, they are not required */}
-        {dishData.type === "pizza" &&
-          <>
-            <div className="input_div">
-              <label>
-                Number of slices ?<br />
-                <input
-                  type="number"
-                  id="no_of_slices"
-                  name="no_of_slices"
-                  min="0"
-                  step="1"
-                  required
-                  value={dishData.no_of_slices}
-                  onChange={handleChange}
-                ></input>
-              </label>
-            </div>
-
-            <div className="input_div">
-              <label>
-                Diameter ?<br />
-                <input
-                  type="number"
-                  id="diameter"
-                  name="diameter"
-                  min="0"
-                  step="0.01"
-                  required
-                  value={dishData.diameter}
-                  onChange={handleChange}
-                ></input>
-              </label>
-            </div>
-          </>
-        }
-
-        {dishData.type === "soup" &&
-          <>
-            <div className="input_div">
-              <label>
-                Spiciness scale (1-10):
-                <br />
-                <input
-                  type="range"
-                  id="spiciness_scale"
-                  name="spiciness_scale"
-                  min="1"
-                  max="10"
-                  step="1"
-                  required
-                  value={dishData.spiciness_scale}
-                  onChange={handleChange}
-                ></input>{" "}
-              </label>
-              {dishData.spiciness_scale}
-            </div>
-          </>
-        }
-
-        {dishData.type === "sandwich" &&
-          <>
-            <div className="input_div">
-              <label>
-                How many slices of bread?
-                <br />
-                <input
-                  type="number"
-                  id="slices_of_bread"
-                  name="slices_of_bread"
-                  min="1"
-                  step="1"
-                  required
-                  value={dishData.slices_of_bread}
-                  onChange={handleChange}
-                ></input>
-              </label>
-            </div>
-          </>
-        }
-
-        <input type="submit" value="Submit" />
-      </form>
-    </div>
+    </form>
   );
 };
+
+DishesForm = reduxForm({
+  form: "dishes",
+  validate,
+  warn,
+})(DishesForm);
+
+const selector = formValueSelector("dishes");
+
+DishesForm = connect((state) => {
+  const typeValue = selector(state, "type");
+  const spiciness_scaleValue = selector(state, "spiciness_scale")
+  return {
+    typeValue,
+    spiciness_scaleValue
+  };
+})(DishesForm);
 
 export default DishesForm;
