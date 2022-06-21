@@ -2,13 +2,13 @@
 
 ## How to setup
 
-If runnning the project shared by email, it does not include the node_modules folder, to recreate it navigate to the project folder and run :\
+If runnning the project shared by email, it does not include the node_modules folder, to recreate it navigate to the project folder and run :
 ### `npm install`
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), so you can start a live preview by navigating to the project directory and running :\
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), so you can start a live preview by navigating to the project directory and running :
 ### `npm start`
 
-Runs the app in the development mode.\
+Runs the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ## Notes
@@ -17,10 +17,10 @@ Here is the recorded time needed to achieve the functionnalities requested in th
 My goal was to quickly produce a v1 to fullfil the core requirements, and then work on a v2 to complete the bonus tasks.
 
 ### v1 - core functions : ~ 3hrs
-* project setup and form structure: 45mn\
-* form interactivity: 1h (managing the fields with the state, handler functions)\
-* POST request with fetch() + testing: 30mn\
-* Learning how to catch 4xx/5xx errors : 1h\
+* project setup and form structure: 45mn
+* form interactivity: 1h (managing the fields with the state, handler functions)
+* POST request with fetch() + testing: 30mn
+* Learning how to catch 4xx/5xx errors : 1h
 
 ### v2 - retrofit with redux-form and UI work: ~7hrs
 * redux-form learning and retrofit to achieve core functions: 3hrs
