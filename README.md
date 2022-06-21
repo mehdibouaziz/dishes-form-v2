@@ -2,7 +2,8 @@
 
 ## How to setup
 
-If runnning the project shared by email, it does not include the node_modules folder, to recreate it navigate to the project folder and run :
+If runnning the project shared by email, it does not include the node_modules folder to save space.
+To recreate it navigate to the project folder and run :
 ### `npm install`
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), so you can start a live preview by navigating to the project directory and running :
