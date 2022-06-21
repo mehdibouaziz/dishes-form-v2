@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import "./DishesForm.css";
+import "../styles/DishesForm.css";
 
 const DishesForm = () => {
   const defaultDishData = {
@@ -153,9 +153,7 @@ const DishesForm = () => {
 
         {/* The following fields are rendered only if relevant to the chosen dish
             Since irrelevant fields are not rendered, they are not required */}
-        {dishData.type !== "pizza" ? (
-          <></>
-        ) : (
+        {dishData.type === "pizza" &&
           <>
             <div className="input_div">
               <label>
@@ -189,11 +187,9 @@ const DishesForm = () => {
               </label>
             </div>
           </>
-        )}
+        }
 
-        {dishData.type !== "soup" ? (
-          <></>
-        ) : (
+        {dishData.type === "soup" &&
           <>
             <div className="input_div">
               <label>
@@ -214,11 +210,9 @@ const DishesForm = () => {
               {dishData.spiciness_scale}
             </div>
           </>
-        )}
+        }
 
-        {dishData.type !== "sandwich" ? (
-          <></>
-        ) : (
+        {dishData.type === "sandwich" &&
           <>
             <div className="input_div">
               <label>
@@ -237,7 +231,7 @@ const DishesForm = () => {
               </label>
             </div>
           </>
-        )}
+        }
 
         <input type="submit" value="Submit" />
       </form>
