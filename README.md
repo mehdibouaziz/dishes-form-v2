@@ -18,12 +18,17 @@ Here is the recorded time needed to achieve the functionnalities requested in th
 My goal was to quickly produce a v1 to fullfil the core requirements, and then work on a v2 to complete the bonus tasks.
 
 ### v1 - core functions : ~ 3hrs
+[v1 GitHub repository](https://github.com/mehdibouaziz/dishes-form-v1)
+[v1 GitHub Pages preview](https://mehdibouaziz.github.io/dishes-form-v1/)
 * project setup and form structure: 45mn
 * form interactivity: 1h (managing the fields with the state, handler functions)
 * POST request with fetch() + testing: 30mn
 * Learning how to catch 4xx/5xx errors : 1h
 
 ### v2 - retrofit with redux-form and UI work: ~7hrs
+[v2 GitHub repository](https://github.com/mehdibouaziz/dishes-form-v2)
+[v2 GitHub Pages preview](https://mehdibouaziz.github.io/dishes-form-v2/)
+
 * redux-form learning and retrofit to achieve core functions: 3hrs
 * UI base: 1h
 * redux-form validation and effects on UI: 2hrs
