@@ -37,12 +37,15 @@ const validate = (values) => {
 };
 
 const warn = (values) => {
-    const warnings = {}
-    if((values.type === "sandwich") & values.slices_of_bread === '1'){
-        warnings.slices_of_bread = 'Is a 1 slice sandwich still a sandwich?'
-    }
-    return warnings
-}
+  const warnings = {};
+  if ((values.type === "sandwich") & (values.slices_of_bread === "1")) {
+    warnings.slices_of_bread = "Is a 1 slice sandwich really a sandwich?";
+  }
+  if ((values.type === "soup") & (values.spiciness_scale === "10")) {
+    warnings.spiciness_scale = "That's reaaaaally spicy, are you sure?";
+  }
+  return warnings;
+};
 
 const renderField = ({
   input,
@@ -54,7 +57,7 @@ const renderField = ({
   step,
   placeholder,
   meta: { touched, error, warning, active, valid },
-  children
+  children,
 }) => (
   <div className="input_div">
     <label>{label}</label>
@@ -67,17 +70,16 @@ const renderField = ({
         min={min}
         max={max}
         step={step}
-        isactive={active ? 'true' : 'false'}
-        isvalid={valid ? 'true' : 'false'}
-        error={touched && (error ? 'true' : 'false')}
-        warning={touched && (warning ? 'true' : 'false')}
+        isactive={active ? "true" : "false"}
+        isvalid={valid ? "true" : "false"}
+        error={touched ? (error ? "true" : "false") : undefined}
+        warning={touched ? (warning ? "true" : "false") : undefined}
       />
       {children}
       {touched &&
         ((error && <span>{error}</span>) ||
           (warning && <span>{warning}</span>))}
     </div>
-    
   </div>
 );
 const selectField = ({
@@ -99,7 +101,14 @@ const selectField = ({
 );
 
 let DishesForm = (props) => {
-  const { handleSubmit, pristine, reset, submitting, typeValue, spiciness_scaleValue } = props;
+  const {
+    handleSubmit,
+    pristine,
+    reset,
+    submitting,
+    typeValue,
+    spiciness_scaleValue,
+  } = props;
 
   return (
     <form onSubmit={handleSubmit}>
@@ -156,16 +165,18 @@ let DishesForm = (props) => {
 
       {typeValue === "soup" && (
         <>
-        <Field
-          name="spiciness_scale"
-          id="spiciness_scale"
-          component={renderField}
-          type="range"
-          min="1"
-          max="10"
-          step="1"
-          label="Spiciness (1-10):"
-        ><p>{spiciness_scaleValue ? spiciness_scaleValue : '?'}</p></Field>
+          <Field
+            name="spiciness_scale"
+            id="spiciness_scale"
+            component={renderField}
+            type="range"
+            min="1"
+            max="10"
+            step="1"
+            label="Spiciness (1-10):"
+          >
+            <p>{spiciness_scaleValue ? spiciness_scaleValue : "?"}</p>
+          </Field>
         </>
       )}
 
@@ -181,10 +192,14 @@ let DishesForm = (props) => {
         ></Field>
       )}
 
-        <div className="controls">
-            <button type="submit"  disabled={pristine || submitting}>Submit</button>
-            <button type="button"  onClick={reset} disabled={pristine || submitting}><i className="fa-solid fa-trash-can"></i></button>
-        </div>
+      <div className="controls">
+        <button type="submit" disabled={pristine || submitting}>
+          Submit
+        </button>
+        <button type="button" onClick={reset} disabled={pristine || submitting}>
+          <i className="fa-solid fa-trash-can"></i>
+        </button>
+      </div>
     </form>
   );
 };
@@ -199,10 +214,10 @@ const selector = formValueSelector("dishes");
 
 DishesForm = connect((state) => {
   const typeValue = selector(state, "type");
-  const spiciness_scaleValue = selector(state, "spiciness_scale")
+  const spiciness_scaleValue = selector(state, "spiciness_scale");
   return {
     typeValue,
-    spiciness_scaleValue
+    spiciness_scaleValue,
   };
 })(DishesForm);
 

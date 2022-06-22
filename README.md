@@ -28,7 +28,12 @@ My goal was to quickly produce a v1 to fullfil the core requirements, and then w
 * UI base: 1h
 * redux-form validation and effects on UI: 2hrs
 * UI finishing touches: 1h
+* Error fixing : 30mn
+
+### component structure
+DishesForm > DishesPage > App > index > render
 
 ### Additional notes
-the redux-form documentation was imo generally easy to follow to achieve basic functions but the advanced functionalities were sometimes hard to find/understand
-redux-form is a neat library and I’m pleased to have learned it :)
+the redux-form documentation was imo generally easy to follow to achieve basic functions but the advanced functionalities were sometimes difficult to find/understand
+There are still 2 error left in the console in live preview, I suppose that's because redux-form is using older lifecycle methods ?
+Overall redux-form is a neat library and I’m pleased to have learned it :)
