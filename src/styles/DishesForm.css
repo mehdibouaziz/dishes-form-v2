@@ -78,6 +78,7 @@ input[value][isvalid="true"][isactive="false"] {
 }
 
 select {
+  -webkit-appearance: none;
   padding: 12px 10px;
   border: solid 1px rgb(214, 214, 214);
   border-radius: 4px;
@@ -87,6 +88,22 @@ select {
 select:focus {
   border: solid 1px rgb(23, 219, 190);
   outline: none;
+}
+
+/* needed so :before can be positioned relatively */
+.selectArrow{
+  display: block;
+  position: relative;
+}
+/* :before can't target a select element so the arrow is position relative to the div wrapper */
+.selectArrow::before {
+  position: absolute;
+  top: 18px;
+  left: 90%;
+  font-family: FontAwesome;
+  color: #00ceaf;
+  content: "\f103";
+  pointer-events: none;
 }
 
 input[type="range"] {
@@ -110,11 +127,13 @@ input[type="range"]::-webkit-slider-thumb {
   width: 15px;
   border-radius: 40%;
 }
+
+/* spiciness value */
 .input_div p {
   display: inline;
   font-size: 1em;
-  font-weight: 400;
-  color: rgb(92, 92, 92);
+  font-weight: 500;
+  color: #00ac92;
 }
 
 form .w100 {

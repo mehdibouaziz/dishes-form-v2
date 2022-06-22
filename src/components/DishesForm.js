@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import "../styles/DishesForm.css";
+import normalizeDuration from "../normalizers/nomalizeDuration";
 
 const validate = (values) => {
   const errors = {};
@@ -85,13 +86,14 @@ const renderField = ({
 const selectField = ({
   input,
   id,
+  className,
   label,
   meta: { touched, error },
   children,
 }) => (
   <div className="input_div">
     <label>{label}</label>
-    <div>
+    <div className={className}>
       <select {...input} id={id}>
         {children}
       </select>
@@ -127,12 +129,14 @@ let DishesForm = (props) => {
         type="text"
         label="Preparation time"
         placeholder="00:00:00"
+        normalize={normalizeDuration}
       ></Field>
       <Field
         name="type"
         id="type"
         component={selectField}
         label="Choose a dish"
+        className="selectArrow"
       >
         <option />
         <option value="pizza">Pizza</option>
