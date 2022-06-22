@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/dishes-form-v2/static/css/main.056add90.css",
-    "main.js": "/dishes-form-v2/static/js/main.5e182616.js",
+    "main.css": "/dishes-form-v2/static/css/main.55af2e67.css",
+    "main.js": "/dishes-form-v2/static/js/main.0270b353.js",
     "static/js/787.c8f5d257.chunk.js": "/dishes-form-v2/static/js/787.c8f5d257.chunk.js",
     "index.html": "/dishes-form-v2/index.html",
-    "main.056add90.css.map": "/dishes-form-v2/static/css/main.056add90.css.map",
-    "main.5e182616.js.map": "/dishes-form-v2/static/js/main.5e182616.js.map",
+    "main.55af2e67.css.map": "/dishes-form-v2/static/css/main.55af2e67.css.map",
+    "main.0270b353.js.map": "/dishes-form-v2/static/js/main.0270b353.js.map",
     "787.c8f5d257.chunk.js.map": "/dishes-form-v2/static/js/787.c8f5d257.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.056add90.css",
-    "static/js/main.5e182616.js"
+    "static/css/main.55af2e67.css",
+    "static/js/main.0270b353.js"
   ]
 }
